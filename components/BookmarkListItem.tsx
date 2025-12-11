@@ -161,7 +161,7 @@ export default function BookmarkListItem({
             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
             {/* Favorite */}
             <button
-              onClick={() => onToggleFavorite(bookmark._id, !bookmark.isFavorite)}
+              onClick={() => onToggleFavorite(bookmark._id.toString(), !bookmark.isFavorite)}
               className={`p-2.5 rounded-xl transition-all ${
                 bookmark.isFavorite
                   ? 'bg-yellow-100/80 hover:bg-yellow-200/80 shadow-sm'
@@ -210,7 +210,7 @@ export default function BookmarkListItem({
 
             {/* Delete */}
             <button
-              onClick={() => onDelete(bookmark._id)}
+              onClick={() => onDelete(bookmark._id.toString())}
               className="p-2.5 rounded-xl hover:bg-red-100/80 hover:shadow-sm transition-all"
               title="삭제"
             >
