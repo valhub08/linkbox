@@ -189,17 +189,17 @@ export default function Sidebar({
 
           <div className="space-y-1">
             {categories.map((category) => {
-              const isExpanded = expandedCategories.has(category._id);
-              const categoryBookmarks = bookmarks.filter(b => b.categoryId === category._id);
+              const isExpanded = expandedCategories.has(category._id.toString());
+              const categoryBookmarks = bookmarks.filter(b => b.categoryId === category._id.toString());
 
               return (
-              <div key={category._id} className="group/category">
+              <div key={category._id.toString()} className="group/category">
                 <div className="relative flex items-center">
                   {/* Chevron button */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      toggleCategory(category._id);
+                      toggleCategory(category._id.toString());
                     }}
                     className="p-1 hover:bg-gray-100/50 rounded transition-colors"
                   >
@@ -222,9 +222,9 @@ export default function Sidebar({
 
                   {/* Category button */}
                   <button
-                    onClick={() => onSelectCategory(category._id)}
+                    onClick={() => onSelectCategory(category._id.toString())}
                     className={`flex-1 flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all ${
-                      selectedCategoryId === category._id
+                      selectedCategoryId === category._id.toString()
                         ? 'bg-blue-100/80 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 font-medium'
                         : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-700/50'
                     }`}
@@ -256,7 +256,7 @@ export default function Sidebar({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onDeleteCategory(category._id);
+                    onDeleteCategory(category._id.toString());
                   }}
                   className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg opacity-0 group-hover/category:opacity-100 hover:bg-red-50 transition-all"
                   title="컬렉션 삭제"
