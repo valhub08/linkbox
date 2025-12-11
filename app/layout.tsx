@@ -5,6 +5,10 @@ import { SessionProvider } from "next-auth/react";
 export const metadata: Metadata = {
   title: "LinkBox - Bookmark Manager",
   description: "Manage your favorite websites with ease",
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({
