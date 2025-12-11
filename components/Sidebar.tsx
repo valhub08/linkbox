@@ -282,7 +282,7 @@ export default function Sidebar({
                   <div className="ml-8 mt-1 space-y-1">
                     {categoryBookmarks.map((bookmark) => (
                       <button
-                        key={bookmark._id}
+                        key={bookmark._id.toString()}
                         onClick={() => onOpenPreview?.(bookmark.url, bookmark.title)}
                         className="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg text-gray-600 hover:bg-gray-100/50 hover:text-gray-900 transition-all group/bookmark text-left"
                       >
