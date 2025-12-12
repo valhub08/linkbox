@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { url, title, description, thumbnail, favicon, categoryId, tags } = body;
+    const { url, title, description, thumbnail, favicon, categoryId, tags, notes } = body;
 
     if (!url || !title || !categoryId) {
       return NextResponse.json(
@@ -68,6 +68,7 @@ export async function POST(request: NextRequest) {
       userId: session.user.email,
       tags: tags || [],
       isFavorite: false,
+      notes,
     });
 
     return NextResponse.json({ success: true, data: bookmark }, { status: 201 });

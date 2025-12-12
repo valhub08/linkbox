@@ -18,6 +18,7 @@ export interface IBookmark extends Document {
   userId: string;
   tags: string[];
   isFavorite: boolean;
+  notes?: string;
   createdAt: Date;
   updatedAt: Date;
   order: number;

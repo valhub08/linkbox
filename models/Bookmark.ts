@@ -42,6 +42,11 @@ const BookmarkSchema = new Schema<IBookmark>({
     type: Boolean,
     default: false,
   },
+  notes: {
+    type: String,
+    trim: true,
+    maxlength: [5000, 'Notes cannot exceed 5000 characters'],
+  },
   order: {
     type: Number,
     default: 0,

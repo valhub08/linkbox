@@ -8,6 +8,7 @@ interface BookmarkCardProps {
   bookmark: IBookmark;
   onDelete: (id: string) => void;
   onEdit: (bookmark: IBookmark) => void;
+  onOpenNotes: (bookmark: IBookmark) => void;
 }
 
 const IconLink = ({ className }: { className?: string }) => (
@@ -39,6 +40,17 @@ const IconDelete = ({ className }: { className?: string }) => (
       strokeLinejoin="round"
       strokeWidth={2}
       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+    />
+  </svg>
+);
+
+const IconNotes = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
     />
   </svg>
 );
@@ -110,11 +122,13 @@ const ThumbnailSection = ({ bookmark }: { bookmark: IBookmark }) => {
 const ContentSection = ({
   bookmark,
   onEdit,
-  onDelete
+  onDelete,
+  onOpenNotes
 }: {
   bookmark: IBookmark;
   onEdit: (bookmark: IBookmark) => void;
   onDelete: (id: string) => void;
+  onOpenNotes: (bookmark: IBookmark) => void;
 }) => (
   <div className="p-4">
     <a
@@ -141,6 +155,13 @@ const ContentSection = ({
         편집
       </button>
       <button
+        onClick={() => onOpenNotes(bookmark)}
+        className="px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+        title="메모"
+      >
+        <IconNotes className="w-4 h-4" />
+      </button>
+      <button
         onClick={() => onDelete(bookmark._id.toString())}
         className="px-3 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/30 rounded-lg transition-colors"
       >
@@ -150,11 +171,11 @@ const ContentSection = ({
   </div>
 );
 
-export default function BookmarkCard({ bookmark, onDelete, onEdit }: BookmarkCardProps) {
+export default function BookmarkCard({ bookmark, onDelete, onEdit, onOpenNotes }: BookmarkCardProps) {
   return (
     <article className="group bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-xl dark:hover:shadow-2xl transition-all duration-200 overflow-hidden hover:-translate-y-1">
       <ThumbnailSection bookmark={bookmark} />
-      <ContentSection bookmark={bookmark} onEdit={onEdit} onDelete={onDelete} />
+      <ContentSection bookmark={bookmark} onEdit={onEdit} onDelete={onDelete} onOpenNotes={onOpenNotes} />
     </article>
   );
 }

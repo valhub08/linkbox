@@ -11,6 +11,7 @@ interface BookmarkListViewItemProps {
   onEdit: (bookmark: IBookmark) => void;
   onToggleFavorite: (id: string, isFavorite: boolean) => void;
   onOpenPreview: (url: string, title: string) => void;
+  onOpenNotes: (bookmark: IBookmark) => void;
 }
 
 const IconLink = ({ className }: { className?: string }) => (
@@ -64,6 +65,17 @@ const IconDelete = ({ className }: { className?: string }) => (
       strokeLinejoin="round"
       strokeWidth={2}
       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+    />
+  </svg>
+);
+
+const IconNotes = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
     />
   </svg>
 );
@@ -181,12 +193,14 @@ const ActionsBar = ({
   bookmark,
   onToggleFavorite,
   onEdit,
-  onDelete
+  onDelete,
+  onOpenNotes
 }: {
   bookmark: IBookmark;
   onToggleFavorite: (id: string, isFavorite: boolean) => void;
   onEdit: (bookmark: IBookmark) => void;
   onDelete: (id: string) => void;
+  onOpenNotes: (bookmark: IBookmark) => void;
 }) => (
   <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all flex-shrink-0">
     <ActionButton
@@ -203,6 +217,14 @@ const ActionsBar = ({
             : 'fill-none stroke-gray-400'
         }`}
       />
+    </ActionButton>
+
+    <ActionButton
+      onClick={() => onOpenNotes(bookmark)}
+      className="hover:bg-blue-100/80"
+      title="메모"
+    >
+      <IconNotes className="w-4 h-4 text-gray-500 hover:text-blue-600" />
     </ActionButton>
 
     <ActionButton
@@ -230,6 +252,7 @@ export default function BookmarkListViewItem({
   onEdit,
   onToggleFavorite,
   onOpenPreview,
+  onOpenNotes,
 }: BookmarkListViewItemProps) {
   return (
     <article className="group bg-[#FFFFFF]/40 dark:bg-gray-800/40 backdrop-blur-2xl rounded-2xl border border-[#FFFFFF]/40 dark:border-gray-700/40 hover:border-[#FFFFFF] dark:hover:border-gray-600 hover:shadow-md hover:shadow-gray-200/30 dark:hover:shadow-gray-900/30 transition-all duration-300 overflow-hidden">
@@ -258,6 +281,7 @@ export default function BookmarkListViewItem({
           onToggleFavorite={onToggleFavorite}
           onEdit={onEdit}
           onDelete={onDelete}
+          onOpenNotes={onOpenNotes}
         />
       </div>
     </article>

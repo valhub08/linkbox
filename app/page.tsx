@@ -9,6 +9,7 @@ import BookmarkListViewItem from '@/components/BookmarkListViewItem';
 import AddBookmarkModal from '@/components/AddBookmarkModal';
 import AddCategoryModal from '@/components/AddCategoryModal';
 import EditBookmarkModal from '@/components/EditBookmarkModal';
+import NotesModal from '@/components/NotesModal';
 import TopNavigation from '@/components/TopNavigation';
 import WebPreviewPanel from '@/components/WebPreviewPanel';
 import SearchBar from '@/components/SearchBar';
@@ -30,6 +31,8 @@ export default function Home() {
   const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] = useState(false);
   const [isEditBookmarkModalOpen, setIsEditBookmarkModalOpen] = useState(false);
   const [editingBookmark, setEditingBookmark] = useState<IBookmark | null>(null);
+  const [isNotesModalOpen, setIsNotesModalOpen] = useState(false);
+  const [notesBookmark, setNotesBookmark] = useState<IBookmark | null>(null);
   const [loading, setLoading] = useState(true);
   const [previewUrl, setPreviewUrl] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
@@ -339,6 +342,41 @@ export default function Home() {
     setIsPreviewOpen(true);
   }, []);
 
+  // Open notes modal
+  const handleOpenNotes = useCallback((bookmark: IBookmark) => {
+    setNotesBookmark(bookmark);
+    setIsNotesModalOpen(true);
+  }, []);
+
+  // Save notes
+  const handleSaveNotes = useCallback(async (notes: string) => {
+    if (!notesBookmark) return;
+
+    try {
+      console.log('Saving notes:', notes);
+      const response = await fetch(`/api/bookmarks/${notesBookmark._id.toString()}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notes }),
+      });
+
+      const result = await response.json();
+      console.log('Save response:', result);
+
+      if (result.success) {
+        await fetchBookmarks();
+        // Update notesBookmark with the latest data
+        setNotesBookmark(result.data);
+        console.log('Updated bookmark with notes:', result.data.notes);
+      } else {
+        alert('메모 저장에 실패했습니다');
+      }
+    } catch (error) {
+      console.error('Failed to save notes:', error);
+      alert('메모 저장 중 오류가 발생했습니다');
+    }
+  }, [notesBookmark, fetchBookmarks]);
+
   // Add category
   const handleAddCategory = useCallback(async (category: { name: string; color: string }) => {
     const response = await fetch('/api/categories', {
@@ -510,6 +548,7 @@ export default function Home() {
                       onEdit={handleEditBookmark}
                       onToggleFavorite={handleToggleFavorite}
                       onOpenPreview={handleOpenPreview}
+                      onOpenNotes={handleOpenNotes}
                     />
                   ) : (
                     <BookmarkListViewItem
@@ -520,6 +559,7 @@ export default function Home() {
                       onEdit={handleEditBookmark}
                       onToggleFavorite={handleToggleFavorite}
                       onOpenPreview={handleOpenPreview}
+                      onOpenNotes={handleOpenNotes}
                     />
                   );
                 })}
@@ -552,6 +592,17 @@ export default function Home() {
         bookmark={editingBookmark}
         categories={categories}
         onUpdate={handleUpdateBookmark}
+      />
+
+      <NotesModal
+        isOpen={isNotesModalOpen}
+        onClose={() => {
+          setIsNotesModalOpen(false);
+          setNotesBookmark(null);
+        }}
+        onSave={handleSaveNotes}
+        initialNotes={notesBookmark?.notes || ''}
+        bookmarkTitle={notesBookmark?.title || ''}
       />
 
       {/* Web Preview Panel */}
